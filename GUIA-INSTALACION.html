@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Guía de instalación | Sistema Electoral Simón Bolívar</title><style>
+:root{--navy:#142c52;--red:#b82e42;--bg:#f3f6fb;--border:#e3e9f2;--ink:#20314c}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 system-ui,-apple-system,'Segoe UI',Arial,sans-serif}header{background:linear-gradient(110deg,#112747,#24477b);color:#fff;padding:25px 36px;display:flex;justify-content:space-between;align-items:center;gap:16px}header b{font-size:21px}header small{display:block;opacity:.8}header button{border:1px solid #adc0d9;background:#fff;color:#142c52;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer}.layout{max-width:1440px;margin:auto;display:grid;grid-template-columns:270px minmax(0,1fr);gap:23px;padding:24px}nav{position:sticky;top:15px;align-self:start;max-height:calc(100vh - 30px);overflow:auto;background:#fff;border:1px solid var(--border);border-radius:15px;padding:16px}nav h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#62748e;margin:4px 0 12px}nav a{display:block;text-decoration:none;color:#334e71;padding:7px 9px;border-radius:7px;font-size:13px}nav a:hover{background:#edf2fa}nav .lv1{font-weight:800;color:#152c4d}nav .lv2{padding-left:17px}main{background:white;border:1px solid var(--border);border-radius:15px;padding:30px 40px;min-width:0;box-shadow:0 10px 30px #183c5c09}h1,h2,h3{color:#152e56;line-height:1.3;scroll-margin-top:20px}h1{font-size:29px;border-bottom:4px solid var(--red);padding-bottom:17px}h2{font-size:22px;border-bottom:1px solid var(--border);padding-bottom:8px;margin-top:35px}h3{font-size:18px;margin-top:26px}a{color:#1b5bb0}pre{background:#101e34;color:#e4edf9;padding:17px;border-radius:12px;overflow:auto;line-height:1.5}code{font-family:Consolas,monospace}:not(pre)>code{background:#edf2f9;padding:2px 5px;border-radius:5px;word-break:break-word}blockquote{border-left:4px solid var(--red);margin:20px 0;padding:10px 18px;background:#fcf3f4;border-radius:0 8px 8px 0}table{border-collapse:collapse;width:100%}th,td{border:1px solid var(--border);padding:9px;text-align:left}th{background:#edf2f8}li{margin:6px 0}.notice{background:#eff5fd;border:1px solid #c6daef;padding:13px 16px;border-radius:10px;margin:0 0 20px}.notice b{color:#164a85}@media(max-width:850px){.layout{grid-template-columns:1fr;padding:10px}nav{position:static;max-height:none}main{padding:21px}header{padding:17px}}@media print{header,nav{display:none}.layout{display:block;padding:0}main{border:0;box-shadow:none;padding:0}body{background:white}h2{break-after:avoid}pre{white-space:pre-wrap}}
+</style></head><body><header><div><b>Guía de instalación · Sistema Electoral Simón Bolívar</b><small>Versión online con portales de estudiantes, administrador y docente observador</small></div><button onclick="window.print()">Imprimir / Guardar PDF</button></header><div class="layout"><nav><h2>Contenido de la guía</h2><a class="lv1" href="#sistema-electoral-online-unidad-educativa-particular-simon-bolivar">Sistema Electoral Online — Unidad Educativa Particular Simón Bolívar</a>
+<a class="lv2" href="#archivos">Archivos</a>
+<a class="lv2" href="#instalacion-detallada">Instalación detallada</a>
+<a class="lv2" href="#problemas-habituales">Problemas habituales</a>
+<a class="lv2" href="#nota-tecnica-de-seguridad">Nota técnica de seguridad</a>
+<a class="lv2" href="#edicion-con-tres-portales-y-permisos-separados">Edición con tres portales y permisos separados</a></nav><main><div class="notice"><b>Antes de comenzar:</b> Esta guía es para instalar el sistema online. Necesitas cuentas en Supabase y GitHub. El proyecto aún requiere pruebas de seguridad y funcionamiento antes de usar datos reales o efectuar una elección oficial.</div><h1 id="sistema-electoral-online-unidad-educativa-particular-simon-bolivar">Sistema Electoral Online — Unidad Educativa Particular Simón Bolívar</h1>
+<p>Este proyecto conserva el diseño institucional de la versión offline, pero <strong>los votos y el padrón se guardan en Supabase</strong>, y GitHub Pages solo publica la interfaz. Funciona desde múltiples dispositivos conectados a internet.</p>
+<h2 id="archivos">Archivos</h2>
+<ul>
+<li><code>index.html</code>: interfaz de votación y administración (mantiene la selección resaltada)</li>
+<li><code>app.js</code>: funcionamiento de la aplicación, importación Excel/CSV y acta imprimible</li>
+<li><code>config.js</code>: URL de Supabase y clave <strong>publishable / anon</strong></li>
+<li><code>database.sql</code>: tablas, permisos, bloqueo de votos duplicados y funciones RPC</li>
+<li><code>assets/logo.png</code>: logotipo institucional original</li>
+<li><code>vendor/jszip.min.js</code>: lector local de <code>.xlsx</code>; no requiere servicios terceros para leer archivos de estudiantes</li>
+</ul>
+<h2 id="instalacion-detallada">Instalación detallada</h2>
+<h3 id="1-crear-base-de-datos-supabase">1. Crear base de datos Supabase</h3>
+<ol>
+<li><p>Crear cuenta en <a href="https://supabase.com">https://supabase.com</a> y elegir <strong>New project</strong>.</p>
+</li>
+<li><p>En <strong>SQL Editor</strong>, crear una consulta nueva. Pegar el contenido COMPLETO de <code>database.sql</code> y ejecutar con <strong>Run</strong>. Este script está diseñado para un proyecto nuevo.</p>
+</li>
+<li><p>En <strong>Authentication → Users</strong> crear el usuario administrador (correo propio y contraseña larga). No es el PIN <code>1234</code> usado en la demostración.</p>
+</li>
+<li><p>En <strong>SQL Editor</strong>, ejecutar (modifica el correo por el correo REAL del usuario creado):</p>
+<pre><code class="language-sql">insert into public.sb_admins(user_id)
+select id from auth.users
+where email = 'administrador@ejemplo.com'
+on conflict do nothing;
+</code></pre>
+</li>
+<li><p>En <strong>Authentication → Settings / General configuration</strong>, desactivar <strong>Allow new users to sign up</strong>. Solo el usuario creado debe ser administrador.</p>
+</li>
+<li><p>En <strong>Project Settings / Connect / API Keys</strong>, copiar el <code>Project URL</code> y una clave <strong>publishable</strong> (o <code>anon</code> si el panel aún la muestra). Editar <code>config.js</code> y sustituir ambos marcadores.</p>
+</li>
+</ol>
+<p><strong>No colocar jamás <code>service_role</code>, una clave <code>secret</code>, contraseña de base de datos ni credenciales del administrador en <code>config.js</code> o en el repositorio.</strong> La clave <code>publishable</code> es apta para el navegador precisamente porque las tablas y funciones están protegidas por permisos.</p>
+<h3 id="2-publicar-la-pagina">2. Publicar la página</h3>
+<ol>
+<li>Crear en <a href="https://github.com">https://github.com</a> un repositorio nuevo, por ejemplo <code>elecciones-simon-bolivar</code>.</li>
+<li>Subir todo el contenido de esta carpeta a la <strong>raíz del repositorio</strong>, respetando <code>assets/</code> y <code>vendor/</code>.</li>
+<li>Ir a <strong>Settings → Pages → Build and deployment → Deploy from a branch → main / (root) → Save</strong>.</li>
+<li>La URL resultante suele tener la forma <code>https://USUARIO.github.io/elecciones-simon-bolivar/</code>.</li>
+<li>Abrir esa dirección en Chrome o Edge. El navegador necesita acceso a internet para Supabase y para la biblioteca JavaScript de Supabase.</li>
+</ol>
+<blockquote>
+<p><strong>Privacidad:</strong> GitHub Pages normalmente publica contenido de repositorios públicos; solo debes subir CÓDIGO y archivos de interfaz. Nunca subas Excel de alumnos, copias de respaldo, listas de cédulas, contraseñas, PIN ni resultados privados al repositorio.</p>
+</blockquote>
+<h3 id="3-preparar-las-elecciones">3. Preparar las elecciones</h3>
+<ol>
+<li>Abre la página y entra a <strong>Administración</strong> con el correo y contraseña del usuario Supabase.</li>
+<li>En <strong>Importar Excel</strong>, descarga la plantilla CSV. Columnas obligatorias: <code>cedula</code>, <code>nombre</code>, <code>curso</code>, <code>pin</code>.</li>
+<li>Reemplaza los datos ficticios por estudiantes reales y PIN individuales de al menos 6 caracteres. <strong>Evita PIN fáciles de predecir, como el número de lista o los últimos dígitos de la cédula.</strong></li>
+<li>Al importar desde Excel, conserva <code>cedula</code> y <code>pin</code> en formato <strong>Texto</strong> para que no desaparezcan ceros iniciales. El sistema admite <code>.xlsx</code> y <code>.csv</code>.</li>
+<li>En <strong>Listas</strong>, sube fotografías/logos de las candidaturas y guarda. Cada imagen debe pesar menos de 110 KB.</li>
+<li>En <strong>Padrón por cursos</strong>, verifica que el total y la clasificación sean correctos.</li>
+<li>En <strong>Control y acta</strong>, pulsa <strong>Abrir elección</strong>.</li>
+</ol>
+<h3 id="4-votacion-y-resultados">4. Votación y resultados</h3>
+<ul>
+<li>Cada estudiante ingresa identificación y PIN. La base de datos comprueba que esté registrado y habilitado.</li>
+<li>Selecciona A, B, blanco o nulo; la opción se resalta antes de confirmar.</li>
+<li>Al confirmar, la operación <strong>bloquea el registro del estudiante</strong> y evita que dos dispositivos registren votos con la misma identificación.</li>
+<li>El voto se inserta en una tabla <strong>sin campo de cédula ni nombre</strong>; el padrón guarda únicamente si participó.</li>
+<li>Durante la elección, el administrador puede ver <strong>participación por curso</strong> y quién está pendiente, pero <strong>no los totales por lista</strong>.</li>
+<li>Al cerrar, se muestran resultados, ganador o empate, exportación CSV y acta para imprimir o guardar como PDF.</li>
+<li>Para <strong>Reiniciar votos</strong>, se debe cerrar la elección, volver a ingresar la contraseña del administrador y escribir <code>REINICIAR VOTOS</code>.</li>
+</ul>
+<h3 id="5-recomendaciones-antes-del-uso-real">5. Recomendaciones antes del uso real</h3>
+<ul>
+<li>Realizar una prueba con cuentas y PIN ficticios desde <strong>dos o más computadoras</strong>. Comprobar que un doble intento de votar con la misma identificación solo crea un voto.</li>
+<li>Hacer respaldos mediante herramientas administrativas de Supabase, no desde un dispositivo estudiantil.</li>
+<li>Considerar la normativa ecuatoriana de protección de datos personales, especialmente porque el padrón puede incluir datos de menores.</li>
+<li>Compartir PIN individualmente; para evitar suplantaciones, supervisar la identidad de quien ingresa el PIN.</li>
+<li>Restringir acceso a Supabase y a la cuenta de GitHub; activar autenticación de dos factores de administradores y responsables del proyecto.</li>
+<li>Evitar subir fotografías de menores sin autorización institucional adecuada.</li>
+<li>El sistema proporciona <strong>control básico de integridad</strong>, no equivale por sí mismo a una plataforma electoral certificada. Antes de una elección oficial debe realizarse una revisión de seguridad y de los procedimientos de escrutinio y respaldo.</li>
+</ul>
+<h2 id="problemas-habituales">Problemas habituales</h2>
+<ul>
+<li><strong>“Pendiente de configuración”</strong>: editar <code>config.js</code> y subir la versión editada al repositorio.</li>
+<li><strong>“Acceso no autorizado” en administración</strong>: crear usuario en Auth y agregarlo a <code>sb_admins</code> con la consulta SQL indicada.</li>
+<li><strong>No se puede importar</strong>: elección debe estar cerrada y con cero votos; todos deben tener PIN.</li>
+<li><strong>No se muestran resultados</strong>: deben cerrarse las elecciones desde Administración.</li>
+<li><strong>La página no carga la base de datos</strong>: revisar conexión a internet, URL y clave publicable, SQL instalado y que la API de Supabase esté habilitada.</li>
+<li><strong>No se genera PDF</strong>: permitir ventanas emergentes; en la nueva ventana elegir “Imprimir → Guardar como PDF”.</li>
+</ul>
+<h2 id="nota-tecnica-de-seguridad">Nota técnica de seguridad</h2>
+<p>Todas las tablas tienen RLS habilitado y permisos de lectura/escritura revocados a <code>anon</code> y <code>authenticated</code>. Las funciones privilegiadas <code>security definer</code> comprueban permisos de administrador cuando es necesario. La función de votación se ejecuta en una única transacción de PostgreSQL con bloqueo de fila. Se limitan los PIN incorrectos a 5 intentos por identificación en una ventana de 15 minutos. El envío de información utiliza HTTPS. Los votos no tienen referencia directa a identificaciones.</p>
+<p><strong>Limitaciones:</strong> sin auditoría criptográfica extremo a extremo; el administrador del proyecto Supabase mantiene privilegios técnicos sobre los datos; las estadísticas de participación y las fotografías del padrón requieren las medidas de privacidad correspondientes. Asegura revisión independiente antes de elecciones vinculantes.</p>
+<h2 id="edicion-con-tres-portales-y-permisos-separados">Edición con tres portales y permisos separados</h2>
+<p>El paquete se entrega con <strong>tres direcciones</strong> del mismo proyecto de GitHub Pages:</p>
+<ul>
+<li><code>index.html</code> — Portal de estudiantes. Solo verificación y emisión del voto.</li>
+<li><code>admin.html</code> — Portal privado del propietario. Inicio de sesión con Supabase Auth y permiso en <code>sb_admins</code>. Permite importar padrón, editar listas, gestionar apertura/cierre, consultar estadísticas y reiniciar.</li>
+<li><code>observador.html</code> — Portal privado de observación para otro docente. Inicio de sesión con Supabase Auth y permiso en <code>sb_observers</code>. <strong>Solo lectura</strong>: resultados preliminares mientras la elección está abierta, resultados finales después del cierre y estado de participación por curso, con filtros de votaron/pendientes.</li>
+</ul>
+<p>La protección de la información <strong>no depende de ocultar una dirección</strong>: aunque alguien conozca <code>admin.html</code> u <code>observador.html</code>, el servidor limita las funciones por cuenta autorizada. El panel del docente <strong>no tiene botones de configuración y no puede llamar exitosamente a las funciones de administración</strong>. Los tres portales comparten la misma base de datos.</p>
+<h3 id="autorizar-al-docente-observador">Autorizar al docente observador</h3>
+<ol>
+<li>En Supabase, crea la cuenta del docente en <strong>Authentication → Users</strong> usando su correo individual y una contraseña privada. No compartas la contraseña de administrador.</li>
+<li>Si ya ejecutaste el SQL de la versión anterior, ejecuta únicamente <code>observer-role.sql</code> en SQL Editor. Si instalas el proyecto desde cero, <code>database.sql</code> ya incluye el módulo de observación y NO hace falta ejecutarlo dos veces.</li>
+<li>Ejecuta la siguiente instrucción reemplazando el correo por el del docente real:</li>
+</ol>
+<pre><code class="language-sql">insert into public.sb_observers(user_id)
+select id from auth.users
+where lower(email)=lower('docente@institucion.edu.ec')
+on conflict do nothing;
+</code></pre>
+<ol start="4">
+<li>Confirma que ese docente <strong>no aparece</strong> en <code>sb_admins</code>; nunca le concedas ambos permisos salvo que deba administrar.</li>
+<li>Entrega solamente el enlace a <code>observador.html</code> y sus credenciales personales.</li>
+</ol>
+<p>Para revocar acceso:</p>
+<pre><code class="language-sql">delete from public.sb_observers
+where user_id in (select id from auth.users where lower(email)=lower('docente@institucion.edu.ec'));
+</code></pre>
+<p><strong>Prueba de permisos:</strong> con la cuenta docente, la llamada <code>sb_observer_snapshot</code> debe funcionar y <code>sb_admin_snapshot</code>, <code>sb_set_open</code>, <code>sb_reset_votes</code>, <code>sb_import_roster</code> y <code>sb_save_profiles</code> deben ser rechazadas. Comprobar también el acceso negado desde una cuenta autenticada sin permisos.</p>
+<h3 id="precaucion-con-los-resultados-preliminares">Precaución con los resultados preliminares</h3>
+<p>Si se consultan cifras agregadas tras cada voto individual y a la vez se dispone del estado del padrón, existe riesgo de deducir cómo votó una persona por diferencias sucesivas. Por ello, no se deben usar los datos preliminares para seguimiento individual, y se recomienda una política de actualizaciones por intervalos o grupos y un acuerdo de confidencialidad. Si se requiere una garantía robusta del secreto de voto incluso ante observadores con acceso repetido, debe rediseñarse el sistema para publicar solo escrutinios agregados con umbrales y retrasos adecuados.</p>
+<p><strong>Privacidad:</strong> Los números de identificación, nombres y estado de participación son datos personales. El acceso del observador debe autorizarse formalmente y limitarse al tiempo necesario. No publiques capturas del padrón ni CSV con datos de menores. <strong>No uses la plataforma en elecciones oficiales hasta probar el SQL, los permisos, la integridad del voto y la protección de datos con un proyecto real de Supabase.</strong></p>
+</main></div></body></html>
