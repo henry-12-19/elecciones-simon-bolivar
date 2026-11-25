@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html lang="es"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><meta content="#102753" name="theme-color"/><title>Elecciones · Simón Bolívar</title><link href="assets/logo.png" rel="icon"/><link href="styles.css" rel="stylesheet"/></head><body data-portal="voter">
+<div class="hide" id="loadingOverlay">Conectando con el sistema electoral…</div>
+<div class="layout"><aside class="side"><div class="brand"><img alt="Escudo institucional" src="assets/logo.png"/><div><b>Simón Bolívar</b><small>SISTEMA ELECTORAL</small></div></div><div class="side-menu"><button class="navbtn active" id="navVote">◈ Votación</button></div><div class="side-footer"><span class="online-dot"></span>Plataforma online<br/>Votación libre supervisada</div></aside>
+<main class="main"><div class="sections"><div class="top"><div class="over">UNIDAD EDUCATIVA PARTICULAR SIMÓN BOLÍVAR</div><span class="pill" id="electionStatus">Consultando estado…</span></div>
+<section id="voteView"><header class="hero"><span class="tag">ELECCIONES ESTUDIANTILES</span><h1>¡Tu voto cuenta!</h1><p>¡Hoy tu voz cuenta! Participa en las elecciones del Consejo Estudiantil y sé parte del futuro de nuestra institución.</p></header>
+<div class="form-card" id="stepIdentify"><div class="step">BIENVENIDOS A LAS ELECCIONES</div><h2>¿Listo para votar? 🗳️</h2><p id="identifyMsg"></p><div class="kids-intro"><div class="kids-intro-item"><span>👆</span><b>Toca ingresar</b></div><div class="kids-intro-item"><span>🗳️</span><b>Elige una opción</b></div><div class="kids-intro-item"><span>✅</span><b>Confirma tu voto</b></div></div><div class="actions"><button class="btn full" id="startVoteButton" onclick="startVote()">INGRESAR A VOTAR  →</button></div></div>
+<div class="form-card hide" id="stepBallot"><div class="step">PASO 1 DE 2 · ELIGE</div><div class="step-art">🗳️</div><h2>¿Por quién quieres votar?</h2><p class="muted">Toca una opción para elegirla.</p><div class="choices" id="ballotChoices">
+<button aria-label="Votar por la Lista A" class="choice team-choice" data-choice="A" onclick="selectChoice('A')" style="--accent:#ed3450;--tint:#fff1f3" type="button">
+<span class="mark">✓ ELEGIDA</span>
+<div class="team-picture"><img alt="Fotografía completa del equipo de Lista A" class="team-background" id="photoA" src="assets/lista-a.webp"/><span class="list-label">LISTA A</span></div>
+<div class="team-info"><div class="team-heading"><h3>LISTA A</h3><img alt="Logotipo Lista A" class="team-logo hide" id="logoA"/></div><div class="team-roles" id="rolesA"></div><p class="team-slogan" id="sloganA"></p><span class="team-select-label">TOCA PARA ELEGIR  ✓</span><span class="hide" id="nameA"></span></div>
+</button>
+<button aria-label="Votar por la Lista B" class="choice team-choice" data-choice="B" onclick="selectChoice('B')" style="--accent:#3567bb;--tint:#edf4ff" type="button">
+<span class="mark">✓ ELEGIDA</span>
+<div class="team-picture"><img alt="Fotografía completa del equipo de Lista B" class="team-background" id="photoB" src="assets/lista-b.webp"/><span class="list-label">LISTA B</span></div>
+<div class="team-info"><div class="team-heading"><h3>LISTA B</h3><img alt="Logotipo Lista B" class="team-logo hide" id="logoB"/></div><div class="team-roles" id="rolesB"></div><p class="team-slogan" id="sloganB"></p><span class="team-select-label">TOCA PARA ELEGIR  ✓</span><span class="hide" id="nameB"></span></div>
+</button>
+<button class="choice simple-choice" data-choice="BLANCO" onclick="selectChoice('BLANCO')" style="--accent:#687b97;--tint:#f2f5f9"><span class="mark">✓ ELEGIDA</span><div class="circleicon">○</div><h3>EN BLANCO</h3><p>No elijo ninguna lista</p></button>
+<button class="choice simple-choice" data-choice="NULO" onclick="selectChoice('NULO')" style="--accent:#586276;--tint:#f1f3f6"><span class="mark">✓ ELEGIDA</span><div class="circleicon">×</div><h3>VOTO NULO</h3><p>Anular mi voto</p></button></div><div class="actions"><button class="btn outline" onclick="goBack()">← ATRÁS</button><button class="btn" disabled="" id="continueButton" onclick="showConfirm()">SIGUIENTE  →</button></div></div>
+<div class="form-card hide" id="stepConfirm"><div class="step">PASO 2 DE 2 · CONFIRMA</div><h2>¿Estás seguro?</h2><p class="muted">Revisa tu elección antes de votar.</p><div class="who" id="confirmChoice"></div><p id="voteMsg"></p><div class="actions"><button class="btn outline" onclick="backToChoices()">← CAMBIAR</button><button class="btn red" id="submitVote" onclick="submitBallot()">✓ SÍ, REGISTRAR VOTO</button></div></div>
+<div class="form-card hide" id="stepSuccess"><div class="success"><div class="success-icon">✓</div><h2>¡Voto registrado! 🎉</h2><p class="muted">¡Muy bien! Tu voto se guardó correctamente.</p><div class="auto-return">Volvemos al inicio en <strong id="countdown">5</strong> segundos.</div><button class="btn outline" onclick="resetVoter()">VOLVER AL INICIO</button></div></div>
+</section>
+<footer class="footer">Unidad Educativa Particular Simón Bolívar · Sistema Electoral Institucional</footer></div></main></div>
+<script src="config.js"></script><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="voter.js"></script></body></html>

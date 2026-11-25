@@ -1,0 +1,8 @@
+SISTEMA ELECTORAL SIMON BOLIVAR — PUBLICACION COMPLETA
+
+Abrir EMPEZAR-AQUI.html en Chrome o Edge para ver pasos.
+Conservar todos los archivos en la raiz y las imagenes dentro de assets/.
+Lista A: foto bandera ROJA. Lista B: foto bandera AZUL.
+No usar en votacion oficial sin pruebas y control presencial; no hay prevencion de votos repetidos por persona.
+
+Si ya se aplico ACTUALIZAR-SUPABASE-VOTO-LIBRE.sql, NO ejecutarlo otra vez.
